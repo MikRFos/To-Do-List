@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}
+<title>Home</title>
+{% endblock %}
+{% block content %}
+<h1 class="display-1 text-center">Sample List</h1>
+<div class="card" style="width: 20rem;">
+    <img src="https://placedog.net/200/280?random">
+    <h5 class="card-title d-grid">
+        <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Get a Dog
+  </button>
+    </h5>
+    <div class="card-body collapse" id="collapseExample">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <input class="form-check-input bg-success" type="checkbox" checked>
+                Pick a breed
+            </li>
+            <li class="list-group-item">
+                <input class="form-check-input" type="checkbox">
+                Find a shelter or breeder and visit
+            </li>
+            <li class="list-group-item">
+                <input class="form-check-input" type="checkbox">
+                Gather supplies
+            </li>
+            <li class="list-group-item">
+                <input class="form-check-input" type="checkbox">
+                Bring Dog Home!
+            </li>
+        </ul>
+        <div class="progress mt-1">
+            <div class="progress-bar bg-success" role="progressbar" aria-label="Basic example" style="width: 25%"  aria-valuenow="25" aria-valuemin="0"
+                 aria-valuemax="100">25%
+            </div>
+        </div>
+        <div class="d-grid col-3 ms-auto mt-3">
+            <button href="#" type="button" class="btn btn-success">Update</button>
+        </div>
+    </div>
+</div>
+<h1 class="display-1 text-center">Add Your Own</h1>
+<div class="card" style="width: 20rem;">
+    <div class="card-body">
+    <form>
+        <label class="form-label">List Title</label>
+        <input type="text" class="form-control">
+        <label class="form-label">List Sub-Objectives</label>
+        <textarea  class="form-control" placeholder="Separate Tasks with Comma"></textarea>
+        <button class="btn btn-success" type="submit">Submit</button>
+    </form>
+        </div>
+</div>
+{% endblock %}
