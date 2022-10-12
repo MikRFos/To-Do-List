@@ -71,30 +71,38 @@
                 <button class="btn btn-success" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapse{{loop.index}}" aria-expanded="false"
                         aria-controls="collapse{loop.index}}">
-                    {{todo['Title']}}
+                    {{todo['title']}}
                 </button>
             </h5>
             <div class="card-body collapse" id="collapse{{loop.index}}">
-                {% for item in todo['Sub_Objectives']%}
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        {{ item[1].check }}
-                        {{item[0]}}
-                    </li>
-                </ul>
-                {% endfor %}
-                <div class="progress mt-1">
-                    <div class="progress-bar bg-success" role="progressbar" aria-label="Basic example"
-                         style="width: {{todo['progress']}}%" aria-valuenow="25" aria-valuemin="0"
-                         aria-valuemax="100">{{todo['progress']}}%
+                <form method="post" action="/">
+                    {% for item in todo['sub_objectives']%}
+                    <ul class="list-group list-group-flush m-0 p-0">
+                        <li class="list-group-item">
+                            <div class="d-grid">
+                                {% if item[1] %}
+                                <a href="{{ url_for('update_list', list_num=todo.id, obj_num=loop.index, current=item[1]) }}" type="button" class="btn btn-outline-warning text-decoration-line-through text-start">{{item[0]}}</a>
+                                {% else %}
+                                <a href="{{ url_for('update_list', list_num=todo.id, obj_num=loop.index, current=item[1]) }}" type="button" class="btn btn-outline-success text-start">{{item[0]}}</a>
+
+                                {% endif %}
+                            </div>
+                        </li>
+                    </ul>
+                    {% endfor %}
+                    <div class="progress mt-1">
+                        <div class="progress-bar bg-success" role="progressbar" aria-label="Basic example"
+                             style="width: {{todo['progress']}}%" aria-valuenow="25" aria-valuemin="0"
+                             aria-valuemax="100">{{todo['progress']}}%
+                        </div>
                     </div>
-                </div>
-                <div class="d-grid col-3 ms-auto mt-3">
-                    <button href="#" type="button" class="btn btn-success">Update</button>
-                </div>
+                    <div class="d-grid col-3 ms-auto mt-3">
+                        <button href="#" type="button" class="btn btn-success">Update</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-        {% endfor %}
+    {% endfor %}
 </div>
-        {% endblock %}
+{% endblock %}

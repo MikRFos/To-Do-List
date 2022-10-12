@@ -12,3 +12,4 @@ class ToDoListForm(FlaskForm):
 
 class ObjectiveForm(FlaskForm):
     check = BooleanField(validators=[Optional()])
+    submit = SubmitField("Submit")
