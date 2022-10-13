@@ -17,14 +17,17 @@
     <link href="{{ url_for('static', filename='/css/styles.css') }}" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-light">
+<nav class="navbar navbar-expand-lg bg-success" style="--bs-bg-opacity: .75;">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <h1 class="navbar-text me-3">To-Do List Maker</h1>
+            <div class="vr"></div>
+            <ul class="navbar-nav ms-3">
+
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>

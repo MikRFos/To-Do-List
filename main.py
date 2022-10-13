@@ -13,6 +13,7 @@ db.init_app(app)
 data = []
 list_id = 0
 
+
 @app.route("/", methods=["GET", "POST"])
 def home():
     global list_id
@@ -29,6 +30,7 @@ def home():
         data.append(to_do_list)
         list_id += 1
     return render_template("index.html", form=form, data=data)
+
 
 @app.route("/update/<list_num>/<obj_num>/<current>")
 def update_list(list_num: int, obj_num: int, current):
@@ -47,9 +49,10 @@ def update_list(list_num: int, obj_num: int, current):
         new_bool = False
     else:
         new_bool = True
-    obj[int(obj_num)-1][1] = new_bool
+    obj[int(obj_num) - 1][1] = new_bool
     current_list['progress'] = progress_count(obj)
     return redirect(url_for("home"))
+
 
 def progress_count(obj_list):
     """Given an objective list calculate the progress of the to do list
@@ -64,7 +67,8 @@ def progress_count(obj_list):
     for obj in obj_list:
         if obj[1]:
             checked_off += 1
-    return int((checked_off/total_items)*100)
+    return int((checked_off / total_items) * 100)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
