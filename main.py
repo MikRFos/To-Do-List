@@ -18,6 +18,8 @@ list_id = 0
 def home():
     global list_id
     form = ToDoListForm()
+    active_lists = [todolist for todolist in data if todolist['progress'] < 100]
+    completed_lists = [todolist for todolist in data if todolist['progress'] >= 100]
     if form.validate_on_submit():
         sub_objectives = [[obj, False] for obj in form.sub_objectives.data.split(",,") if obj.strip()]
         to_do_list = {
@@ -29,7 +31,7 @@ def home():
         }
         data.append(to_do_list)
         list_id += 1
-    return render_template("index.html", form=form, data=data)
+    return render_template("index.html", form=form, data=data, active=active_lists, completed=completed_lists)
 
 
 @app.route("/update/<list_num>/<obj_num>/<current>")
