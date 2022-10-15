@@ -29,14 +29,21 @@
             <ul class="navbar-nav ms-3">
 
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" href="{{url_for('home')}}">Home</a>
                 </li>
             </ul>
+            {% if not current_user.is_authenticated %}
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Login</a>
+                    <a class="nav-link" href="{{url_for('login')}}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('register_user')}}">Register</a>
                 </li>
             </ul>
+            {% else %}
+            <h4 class="navbar-text me-3 ms-auto">{{current_user.username}}</h4>
+            {% endif %}
         </div>
     </div>
 </nav>

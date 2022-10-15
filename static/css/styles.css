@@ -21,3 +21,7 @@ h1{
 .list-complete{
     filter: grayscale(100%);
 }
+
+.form-label{
+    color: #E5E5E5;
+}
