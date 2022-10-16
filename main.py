@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, render_template, url_for, redirect, flash
-from flask_login import LoginManager, login_user, current_user, login_required
+from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from sqlalchemy import func
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -27,16 +27,12 @@ def load_user(user_id):
 
 @app.route("/", methods=["GET", "POST"])
 def home():
+    global list_id
+
     if current_user.is_authenticated:
         return redirect("home")
 
-    global list_id
-    global data
     form = ToDoListForm()
-
-    active_lists = [todolist for todolist in data if todolist['progress'] < 100]
-    completed_lists = [todolist for todolist in data if todolist['progress'] >= 100]
-
     if form.validate_on_submit():
         sub_objectives = [[obj, False] for obj in form.sub_objectives.data.split(",,") if obj.strip()]
         to_do_list = {
@@ -47,16 +43,20 @@ def home():
             "progress": 0,
         }
         data.append(to_do_list)
+        print("list added")
         list_id += 1
+
+    active_lists = [todolist for todolist in data if todolist['progress'] < 100]
+    completed_lists = [todolist for todolist in data if todolist['progress'] >= 100]
+
     return render_template("index.html", form=form, data=data, active=active_lists, completed=completed_lists)
 
 @app.route("/home", methods=["GET", "POST"])
 @login_required
 def user_home():
+
     form = ToDoListForm()
-    data = List.query.filter_by(user_id=current_user.id).all()
-    active_lists = [todolist for todolist in data if todolist.progress < 100]
-    completed_lists = [todolist for todolist in data if todolist.progress >= 100]
+
     if form.validate_on_submit():
         sub_objectives = [[obj, False] for obj in form.sub_objectives.data.split(",,") if obj.strip()]
         new_list = List(title=form.title.data, img_url=form.image_url.data, progress=0, user_id=current_user.id)
@@ -66,7 +66,11 @@ def user_home():
             new_obj = Objective(list_id=new_list.id, objective_text=obj[0], complete=False)
             db.session.add(new_obj)
         db.session.commit()
-    return render_template("user_home.html", form=form, data=data, active=active_lists, completed=completed_lists)
+
+    list_data = List.query.filter_by(user_id=current_user.id).all()
+    active_lists = [todolist for todolist in list_data if todolist.progress < 100]
+    completed_lists = [todolist for todolist in list_data if todolist.progress >= 100]
+    return render_template("user_home.html", form=form, data=list_data, active=active_lists, completed=completed_lists)
 
 @app.route("/register", methods=["GET", "POST"])
 def register_user():
@@ -104,7 +108,7 @@ def login():
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
-                return redirect(url_for("add_book"))
+                return redirect(url_for("user_home"))
             flash("Incorrect Password")
             return redirect(url_for("login"))
         flash("Username Does Not Exist")
@@ -158,6 +162,11 @@ def progress_count(obj_list):
             checked_off += 1
     return int((checked_off / total_items) * 100)
 
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("home"))
 
 if __name__ == "__main__":
     app.run(debug=True)
